@@ -1,4 +1,5 @@
 import warnings
+from collections import OrderedDict
 from asl_data import SinglesData
 
 
@@ -20,6 +21,18 @@ def recognize(models: dict, test_set: SinglesData):
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     probabilities = []
     guesses = []
-    # TODO implement the recognizer
-    # return probabilities, guesses
-    raise NotImplementedError
+
+    all_Xlengths = OrderedDict(sorted(test_set.get_all_Xlengths().items(), key=lambda key: key[0]))
+
+    for X, length in all_Xlengths.values():
+        words = {}
+        for model_word, model in models.items():
+            try:
+                words[model_word] = model.score(X, length)
+            except Exception as e:
+                words[model_word] = float("-inf")
+        best_guess, __ = sorted(words.items(), key=lambda key: -key[1])[0]
+        probabilities.append(words)
+        guesses.append(best_guess)
+
+    return probabilities, guesses

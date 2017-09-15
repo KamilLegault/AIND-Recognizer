@@ -15,25 +15,37 @@ class TestSelectors(TestCase):
         self.xlengths = self.training.get_all_Xlengths()
 
     def test_select_constant_interface(self):
+        print("First Test")
         model = SelectorConstant(self.sequences, self.xlengths, 'BUY').select()
         self.assertGreaterEqual(model.n_components, 2)
         model = SelectorConstant(self.sequences, self.xlengths, 'BOOK').select()
         self.assertGreaterEqual(model.n_components, 2)
 
     def test_select_bic_interface(self):
+        print("Second Test")
         model = SelectorBIC(self.sequences, self.xlengths, 'FRANK').select()
         self.assertGreaterEqual(model.n_components, 2)
         model = SelectorBIC(self.sequences, self.xlengths, 'VEGETABLE').select()
         self.assertGreaterEqual(model.n_components, 2)
 
     def test_select_cv_interface(self):
+        print("Third Test")
         model = SelectorCV(self.sequences, self.xlengths, 'JOHN').select()
         self.assertGreaterEqual(model.n_components, 2)
         model = SelectorCV(self.sequences, self.xlengths, 'CHICKEN').select()
         self.assertGreaterEqual(model.n_components, 2)
 
     def test_select_dic_interface(self):
+        print("Fourth Test")
         model = SelectorDIC(self.sequences, self.xlengths, 'MARY').select()
         self.assertGreaterEqual(model.n_components, 2)
         model = SelectorDIC(self.sequences, self.xlengths, 'TOY').select()
         self.assertGreaterEqual(model.n_components, 2)
+
+if __name__ == '__main__':
+    test_case = TestSelectors()
+    test_case.setUp()
+    test_case.test_select_constant_interface()
+    test_case.test_select_bic_interface()
+    test_case.test_select_cv_interface()
+    test_case.test_select_dic_interface()
